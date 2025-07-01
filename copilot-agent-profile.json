@@ -1,0 +1,245 @@
+{
+  "name": "wesship-copilot-agent",
+  "version": "1.0.0",
+  "description": "GitHub Copilot agent configuration for wesship organization development workflows",
+  "organization": "wesship",
+  
+  "coding_style": {
+    "general": {
+      "indentation": "2 spaces",
+      "line_length": 100,
+      "semicolons": true,
+      "trailing_commas": true,
+      "quote_style": "double"
+    },
+    "javascript_typescript": {
+      "prefer_const": true,
+      "arrow_functions": true,
+      "destructuring": true,
+      "template_literals": true,
+      "async_await": true,
+      "eslint_config": "@wesship/eslint-config",
+      "prettier_config": "@wesship/prettier-config"
+    },
+    "python": {
+      "formatter": "black",
+      "line_length": 88,
+      "import_order": "isort",
+      "type_hints": true,
+      "docstring_style": "google"
+    },
+    "go": {
+      "formatter": "gofmt",
+      "linter": "golangci-lint",
+      "naming_convention": "camelCase",
+      "error_handling": "explicit"
+    },
+    "yaml": {
+      "indentation": "2 spaces",
+      "quote_strings": false,
+      "flow_mapping": false
+    },
+    "markdown": {
+      "line_length": 80,
+      "emphasis_marker": "*",
+      "strong_marker": "**",
+      "unordered_list_marker": "-"
+    }
+  },
+  
+  "context_window": {
+    "max_tokens": 16000,
+    "prioritize_recent_changes": true,
+    "include_related_files": true,
+    "max_related_files": 5,
+    "context_strategies": [
+      "file_imports",
+      "function_calls",
+      "type_definitions",
+      "test_files",
+      "documentation"
+    ]
+  },
+  
+  "pr_template": {
+    "location": ".github/PULL_REQUEST_TEMPLATE.md",
+    "auto_fill": true,
+    "required_sections": [
+      "description",
+      "type_of_change",
+      "testing",
+      "related_issues"
+    ],
+    "suggestions": {
+      "link_issues": true,
+      "suggest_reviewers": true,
+      "add_labels": true,
+      "estimate_size": true
+    }
+  },
+  
+  "preferred_tests": {
+    "javascript_typescript": {
+      "framework": "jest",
+      "test_location": "src/**/*.test.{js,ts}",
+      "coverage_threshold": 80,
+      "test_patterns": [
+        "unit_tests",
+        "integration_tests",
+        "snapshot_tests"
+      ],
+      "mocking_library": "@jest/mock"
+    },
+    "python": {
+      "framework": "pytest",
+      "test_location": "tests/",
+      "coverage_tool": "pytest-cov",
+      "coverage_threshold": 85,
+      "test_patterns": [
+        "test_*.py",
+        "*_test.py"
+      ],
+      "fixtures": true
+    },
+    "go": {
+      "framework": "builtin",
+      "test_location": "*_test.go",
+      "coverage_threshold": 80,
+      "benchmark_tests": true,
+      "table_driven_tests": true
+    },
+    "general": {
+      "prefer_table_driven": true,
+      "test_isolation": true,
+      "setup_teardown": true,
+      "mock_external_deps": true,
+      "test_edge_cases": true
+    }
+  },
+  
+  "code_generation": {
+    "documentation": {
+      "auto_generate": true,
+      "include_examples": true,
+      "document_parameters": true,
+      "document_return_values": true,
+      "document_exceptions": true,
+      "style_guide": "jsdoc"
+    },
+    "comments": {
+      "explain_complex_logic": true,
+      "todo_format": "TODO(username): description",
+      "fixme_format": "FIXME(username): description",
+      "hack_format": "HACK(username): description"
+    },
+    "naming_conventions": {
+      "functions": "camelCase",
+      "variables": "camelCase",
+      "constants": "UPPER_SNAKE_CASE",
+      "classes": "PascalCase",
+      "files": "kebab-case",
+      "directories": "kebab-case"
+    }
+  },
+  
+  "security": {
+    "scan_for_secrets": true,
+    "validate_dependencies": true,
+    "suggest_secure_patterns": true,
+    "highlight_vulnerabilities": true,
+    "security_frameworks": [
+      "owasp",
+      "cwe"
+    ],
+    "sensitive_patterns": [
+      "api_key",
+      "password",
+      "token",
+      "secret",
+      "private_key",
+      "certificate"
+    ]
+  },
+  
+  "performance": {
+    "suggest_optimizations": true,
+    "highlight_anti_patterns": true,
+    "async_recommendations": true,
+    "memory_usage_awareness": true,
+    "database_query_optimization": true
+  },
+  
+  "collaboration": {
+    "code_review": {
+      "suggest_improvements": true,
+      "check_style_consistency": true,
+      "validate_tests": true,
+      "security_review": true,
+      "performance_review": true
+    },
+    "mentoring": {
+      "explain_suggestions": true,
+      "provide_learning_resources": true,
+      "encourage_best_practices": true,
+      "skill_level_adaptation": "adaptive"
+    }
+  },
+  
+  "automation": {
+    "auto_imports": true,
+    "auto_format": true,
+    "auto_fix_linting": true,
+    "suggest_refactoring": true,
+    "generate_boilerplate": true,
+    "update_dependencies": false
+  },
+  
+  "integrations": {
+    "mcp_server": {
+      "enabled": true,
+      "config_file": "mcp-server.config.yaml",
+      "auto_sync": true,
+      "priority_notifications": true
+    },
+    "ci_cd": {
+      "github_actions": true,
+      "suggest_workflows": true,
+      "optimize_pipelines": true
+    },
+    "issue_tracking": {
+      "link_code_to_issues": true,
+      "suggest_issue_labels": true,
+      "estimate_effort": true
+    }
+  },
+  
+  "learning": {
+    "adapt_to_codebase": true,
+    "learn_patterns": true,
+    "remember_preferences": true,
+    "improve_suggestions": true,
+    "feedback_integration": true
+  },
+  
+  "experimental_features": {
+    "ai_pair_programming": false,
+    "predictive_coding": false,
+    "auto_documentation": true,
+    "intelligent_refactoring": true,
+    "context_aware_suggestions": true
+  },
+  
+  "limits": {
+    "max_suggestion_length": 1000,
+    "max_file_size_mb": 10,
+    "max_concurrent_operations": 5,
+    "suggestion_timeout_ms": 5000
+  },
+  
+  "feedback": {
+    "collect_usage_stats": true,
+    "anonymous_telemetry": true,
+    "improvement_suggestions": true,
+    "satisfaction_tracking": true
+  }
+}

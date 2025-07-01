@@ -1,0 +1,200 @@
+# MCP Server Configuration for GitHub Copilot + Automation Workflows
+# This configuration enables robust integration between MCP servers and GitHub Copilot
+# for enhanced development workflows, issue triage, and PR automation.
+
+version: "1.0"
+organization: "wesship"
+
+# Default repositories that MCP servers should monitor and interact with
+repositories:
+  default:
+    - "wesship/*"  # All repositories in the organization
+  priority:
+    - "wesship/core"
+    - "wesship/api"
+    - "wesship/frontend"
+  
+# MCP Server Settings
+mcp:
+  # Issue Triage Configuration
+  issue_triage:
+    enabled: true
+    auto_label: true
+    priority_detection: true
+    assignment_rules:
+      bug_reports: ["@wesship/dev-team"]
+      feature_requests: ["@wesship/product-team"]
+      security_issues: ["@wesship/security-team"]
+    
+    # Auto-labeling rules based on content analysis
+    labeling_rules:
+      - pattern: "(?i)(crash|error|exception|fail)"
+        labels: ["bug", "high-priority"]
+      - pattern: "(?i)(security|vulnerability|exploit)"
+        labels: ["security", "critical"]
+      - pattern: "(?i)(performance|slow|timeout)"
+        labels: ["performance", "optimization"]
+      - pattern: "(?i)(documentation|docs|readme)"
+        labels: ["documentation"]
+      - pattern: "(?i)(test|testing|spec)"
+        labels: ["testing"]
+
+  # Pull Request Automation
+  pr_automation:
+    enabled: true
+    auto_review_request: true
+    conflict_detection: true
+    size_labeling: true
+    
+    # Automatic reviewer assignment based on file patterns
+    reviewer_rules:
+      - pattern: "*.md"
+        reviewers: ["@wesship/docs-team"]
+      - pattern: "*.yml|*.yaml"
+        reviewers: ["@wesship/devops-team"]
+      - pattern: "*.js|*.ts|*.jsx|*.tsx"
+        reviewers: ["@wesship/frontend-team"]
+      - pattern: "*.py|*.go|*.java"
+        reviewers: ["@wesship/backend-team"]
+      - pattern: "Dockerfile|docker-compose.*"
+        reviewers: ["@wesship/devops-team"]
+    
+    # PR size classification
+    size_rules:
+      small: 10    # lines changed
+      medium: 100
+      large: 500
+      xlarge: 1000
+
+  # Code Agent Features
+  code_agent:
+    enabled: true
+    auto_suggestions: true
+    code_quality_checks: true
+    security_scanning: true
+    
+    # Copilot integration settings
+    copilot_integration:
+      context_window: 16000
+      code_completion: true
+      documentation_generation: true
+      test_generation: true
+      refactoring_suggestions: true
+    
+    # Quality gates
+    quality_gates:
+      - name: "test_coverage"
+        threshold: 80
+        required: true
+      - name: "code_complexity"
+        threshold: 10
+        required: false
+      - name: "security_score"
+        threshold: 8
+        required: true
+
+# Notification Settings
+notifications:
+  slack:
+    enabled: false  # Configure with your Slack webhook URL
+    channels:
+      general: "#dev-general"
+      critical: "#dev-alerts"
+      security: "#security-alerts"
+  
+  email:
+    enabled: false  # Configure with SMTP settings
+    recipients:
+      - "dev-team@wesship.com"
+
+# Security Configuration
+security:
+  secret_scanning: true
+  dependency_scanning: true
+  code_scanning: true
+  
+  # Sensitive file patterns to monitor
+  sensitive_patterns:
+    - "*.key"
+    - "*.pem"
+    - "*.env"
+    - "*secret*"
+    - "*password*"
+    - "*token*"
+
+# Workflow Automation
+workflows:
+  # Auto-close stale issues
+  stale_issues:
+    enabled: true
+    days_before_stale: 60
+    days_before_close: 7
+    exempt_labels: ["pinned", "security", "critical"]
+  
+  # Auto-merge dependabot PRs
+  dependabot_auto_merge:
+    enabled: true
+    auto_approve: true
+    security_updates_only: true
+  
+  # Release automation
+  release_automation:
+    enabled: true
+    auto_changelog: true
+    semantic_versioning: true
+    tag_format: "v{version}"
+
+# Integration Settings
+integrations:
+  github_copilot:
+    enabled: true
+    suggestions_enabled: true
+    chat_enabled: true
+    cli_enabled: true
+  
+  github_actions:
+    enabled: true
+    auto_trigger_workflows: true
+    status_checks_required: true
+  
+  third_party:
+    jira:
+      enabled: false
+      # Configure with your Jira instance details
+    linear:
+      enabled: false
+      # Configure with your Linear API key
+    notion:
+      enabled: false
+      # Configure with your Notion integration token
+
+# Logging and Monitoring
+logging:
+  level: "info"
+  format: "json"
+  destinations:
+    - "console"
+    - "file"
+  
+  # Audit trail for all MCP server actions
+  audit:
+    enabled: true
+    retention_days: 90
+    include_payloads: false  # Set to true for debugging
+
+# Rate Limiting
+rate_limiting:
+  github_api:
+    requests_per_hour: 5000
+    burst_limit: 100
+  
+  webhook_processing:
+    max_concurrent: 10
+    queue_size: 1000
+
+# Feature Flags
+feature_flags:
+  experimental_ai_features: false
+  advanced_code_analysis: true
+  multi_repo_insights: true
+  predictive_issue_routing: false
