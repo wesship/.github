@@ -1,0 +1,111 @@
+name: Reusable Vercel Deploy
+
+on:
+  workflow_call:
+    inputs:
+      environment:
+        description: Vercel target environment
+        required: false
+        default: production
+        type: string
+      working-directory:
+        description: Directory of app source in caller repository
+        required: false
+        default: .
+        type: string
+      production:
+        description: Deploy to production (`--prod`)
+        required: false
+        default: true
+        type: boolean
+      node-version:
+        description: Node.js version used for CLI execution
+        required: false
+        default: '20'
+        type: string
+      vercel-version:
+        description: Vercel CLI version
+        required: false
+        default: 'latest'
+        type: string
+    secrets:
+      VERCEL_TOKEN:
+        required: true
+      VERCEL_ORG_ID:
+        required: true
+      VERCEL_PROJECT_ID:
+        required: true
+    outputs:
+      deployment_url:
+        description: URL returned by Vercel deploy
+        value: ${{ jobs.deploy.outputs.deployment_url }}
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    outputs:
+      deployment_url: ${{ steps.deploy.outputs.deployment_url }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ inputs.node-version }}
+
+      - name: Install Vercel CLI
+        run: npm install --global "vercel@${{ inputs.vercel-version }}"
+
+      - name: Validate working directory
+        working-directory: ${{ inputs.working-directory }}
+        run: |
+          test -f package.json || {
+            echo "package.json not found in $PWD" >&2
+            exit 1
+          }
+
+      - name: Pull Vercel environment
+        working-directory: ${{ inputs.working-directory }}
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: |
+          vercel pull --yes --environment=${{ inputs.environment }} --token="$VERCEL_TOKEN"
+
+      - name: Build with Vercel
+        working-directory: ${{ inputs.working-directory }}
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          vercel build --token="$VERCEL_TOKEN"
+
+      - name: Deploy prebuilt output
+        id: deploy
+        working-directory: ${{ inputs.working-directory }}
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          set -euo pipefail
+          DEPLOY_ARGS="--prebuilt --yes --token=$VERCEL_TOKEN"
+          if [ "${{ inputs.production }}" = "true" ]; then
+            DEPLOY_ARGS="$DEPLOY_ARGS --prod"
+          fi
+
+          DEPLOY_OUTPUT=$(vercel deploy $DEPLOY_ARGS 2>&1)
+          echo "$DEPLOY_OUTPUT"
+
+          DEPLOYMENT_URL=$(printf '%s\n' "$DEPLOY_OUTPUT" | grep -Eo "https://[A-Za-z0-9.-]+\.vercel\.app" | tail -n 1)
+          if [ -z "$DEPLOYMENT_URL" ]; then
+            echo "Could not detect deployment URL from Vercel output" >&2
+            exit 1
+          fi
+
+          echo "deployment_url=$DEPLOYMENT_URL" >> "$GITHUB_OUTPUT"
+          echo "### Vercel Deployment\n- URL: $DEPLOYMENT_URL" >> "$GITHUB_STEP_SUMMARY"
