@@ -1,21 +1,22 @@
-### Hi there, this is n8n 👋
+# Supreme AI Deployment Hub
 
-n8n is a low-code automation tool. With over 220 pre-built integrations and a general connector for anything with an API, n8n enables you to connect anything to everything. With n8n you can move beyond simple one step integrations to build multi-step workflows that integrate your tools exactly the way you want, including adding AI functionality. Thanks to its <a href="https://faircode.io/">fair-code</a> distribution model, n8n will always have visible source code, be available to self-host, have a free community edition, and allow you to add your own custom functions, logic, and apps.
+Welcome to **Supreme AI Deployment Hub**.
 
-- Check out <a href="https://github.com/n8n-io/n8n">our main project here.</a>
-- Interested in working for n8n? See our<a href="https://n8n.io/careers"> open positions</a>.
-- Learn more how to <a href="https://docs.n8n.io/hosting/">self-host n8n in our docs</a>. 
-- Want to quickly test out n8n? <a href="https://n8n.io/get-started/?utm_medium=referral&utm_source=github.com&utm_campaign=readme">Download our desktop app</a> to see what the fuss is all about. 
-- Not interested in hosting n8n yourself? We also offer <a href="https://n8n.io/cloud/?utm_medium=referral&utm_source=github.com&utm_campaign=readme">n8n cloud</a> for a monthly fee. 
-- Both our team and our users have been building a <a href="https://n8n.io/workflows/?utm_medium=referral&utm_source=github.com&utm_campaign=readme">workflow template library</a> to help others easily get started with n8n automations. 
+This organization is focused on building, shipping, and operating AI systems in production.
 
+## What you'll find here
 
-![Image](https://n8niostorageaccount.blob.core.windows.net/n8nio-strapi-blobs-prod/assets/github_screen_2_86155234c3.png "Stripe to Hubspot to Slack")
+- Deployment-ready AI services and templates
+- Infrastructure and CI/CD automation for ML/LLM workloads
+- Monitoring, evaluation, and reliability tooling
+- Reference architectures and practical examples
 
- We launched in 2019 with a ton of interest, and things have accelerated since then:
+## Mission
 
-- 📈 With 100m+ Docker pulls and a huge active user base/community - we're already building global traction
-- ⭐️ With 40k stars, we are now in the top 600 of the 238m projects on GitHub
-- 🌱 We were Sequoia's first seed investment in Germany, and recently raised a $12m Series A round, led by Felicis Ventures
+Make AI deployment **simple, scalable, and reliable**.
 
-We're on a mission to give technical superpowers to everyone with a computer. <a href="https://n8n.io/careers">Join us!</a>
+## Get involved
+
+- Explore repositories and starter templates
+- Open issues with ideas or improvements
+- Contribute via pull requests
