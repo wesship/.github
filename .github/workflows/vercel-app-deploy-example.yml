@@ -1,9 +1,6 @@
 name: Vercel Deploy (Example Caller)
 
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
 
 jobs:
